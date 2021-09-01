@@ -35,5 +35,8 @@ typedef struct	s_m
 	int				end;
 }				t_m;
 
+int		ft_atoi(const char *str);
+void	ft_error(char *str, int ret);
+size_t	ft_strlen(const char *s);
 
 #endif
