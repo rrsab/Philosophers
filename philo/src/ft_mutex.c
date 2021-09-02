@@ -1,6 +1,6 @@
 #include "../includes/philo.h"
 
-static int	ft_create_mutex_global(t_vars *vars)
+static int	ft_create_mutex_global(t_m *vars)
 {
 	vars->global_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (vars->global_mutex != NULL)
@@ -27,7 +27,7 @@ static int	ft_create_mutex_global(t_vars *vars)
 	return (0);
 }
 
-static int	ft_create_mutex_number(t_vars *vars)
+static int	ft_create_mutex_number(t_m *vars)
 {
 	vars->number_get_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (vars->number_get_mutex != NULL)
@@ -43,7 +43,7 @@ static int	ft_create_mutex_number(t_vars *vars)
 	return (0);
 }
 
-static int	ft_create_mutex_fork(t_vars *vars)
+static int	ft_create_mutex_fork(t_m *vars)
 {
 	int	i;
 
@@ -66,7 +66,7 @@ static int	ft_create_mutex_fork(t_vars *vars)
 	return (0);
 }
 
-int	ft_create_mutex(t_vars *vars)
+int	ft_create_mutex(t_m *vars)
 {
 	if (ft_create_mutex_fork(vars))
 		return (-1);
