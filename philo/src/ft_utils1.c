@@ -38,8 +38,28 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-void	ft_error(char *str, int ret)
+int	ft_error(char *str, int ret)
 {
 	write(STDOUT_FILENO, str, ft_strlen(str));
 	return (ret);
+}
+
+void	ft_free(t_m *vars)
+{
+	int	i;
+
+	i = -1;
+	while (vars->philoss[++i])
+		free(vars->philoss[i]);
+	free(vars->philoss);
+	free(vars->retval);
+	while (--vars->number_p + 1)
+		pthread_mutex_destroy(&vars->forks[vars->number_p]);
+	free(vars->forks);
+	pthread_mutex_destroy(vars->number_get_mutex);
+	free(vars->number_get_mutex);
+	pthread_mutex_destroy(vars->global_mutex);
+	free(vars->global_mutex);
+	pthread_mutex_destroy(vars->print_mutex);
+	free(vars->print_mutex);
 }

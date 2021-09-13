@@ -1,6 +1,6 @@
 #include "../includes/philo.h"
 
-static void	ft_start_time(t_vars *vars)
+static void	ft_start_time(t_m *vars)
 {
 	gettimeofday(&vars->time, NULL);
 	vars->start_time = vars->time.tv_usec / 1000;

@@ -36,8 +36,10 @@ typedef struct	s_m
 }				t_m;
 
 int		ft_atoi(const char *str);
-void	ft_error(char *str, int ret);
+int 	ft_error(char *str, int ret);
 size_t	ft_strlen(const char *s);
-int		ft_create_mutex(t_vars *vars);
+int		ft_check_argc(int argc, char **argv, t_m *vars);
+int		ft_create_mutex(t_m *vars);
+void	ft_free(t_m *vars);
 
 #endif
