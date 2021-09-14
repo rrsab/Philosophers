@@ -41,5 +41,7 @@ size_t	ft_strlen(const char *s);
 int		ft_check_argc(int argc, char **argv, t_m *vars);
 int		ft_create_mutex(t_m *vars);
 void	ft_free(t_m *vars);
+void	*ft_philo(void *args);
+int		ft_philo_number(t_m *vars);
 
 #endif

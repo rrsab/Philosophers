@@ -26,6 +26,17 @@ int	ft_create_pthreads(t_m *vars)
 		return (-1);
 	vars->philoss[vars->number_p] = NULL;
 	if (ft_allocate(vars))
-		return 
-
+		return (-1);
+	i = -1;
+	while (++i < vars->number_p)
+	{
+		ret = pthread_create(&vars->philoss[i]->pthread, NULL, ft_philo, vars);
+		if (ret != 0)
+			return (-1);
+	}
+	vars->retval = (int *)malloc(sizeof(int) * (vars->number_p + 1));
+	if (!(vars->retval))
+		return (-1);
+	vars->retval[vars->number_p] = 0;
+	return (0);
 }
