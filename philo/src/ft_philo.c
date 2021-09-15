@@ -1,13 +1,25 @@
 #include "../includes/philo.h"
 
-static int	ft_philo_loop_body(t_vars *vars, int number_philo, long int *time)
+int	ft_if_die(t_m *vars, int number_philo, long int *time)
 {
-	pthread_mutex_lock(&vars->forks[vars->philos[number_philo]->fork_2]);
-	pthread_mutex_lock(&vars->forks[vars->philos[number_philo]->fork_1]);
+	if (time[0] != 0 && time[1] != 0
+	&& (((vars->time.tv_sec - time[0]) * 1000000 + vars->time.tv_usec)
+	- time[1]) > vars->time_to_die * 1000)
+	{
+		ft_print_status(vars, number_philo + 1, STATUS_DIE);
+		return (1);
+	}
+	return (0);
+}
+
+static int	ft_philo_loop_body(t_m *vars, int number_philo, long int *time)
+{
+	pthread_mutex_lock(&vars->forks[vars->philoss[number_philo]->r_fork]);
+	pthread_mutex_lock(&vars->forks[vars->philoss[number_philo]->l_fork]);
 	if (vars->end || ft_if_die(vars, number_philo, time))
 	{
-		pthread_mutex_unlock(&vars->forks[vars->philos[number_philo]->fork_2]);
-		pthread_mutex_unlock(&vars->forks[vars->philos[number_philo]->fork_1]);
+		pthread_mutex_unlock(&vars->forks[vars->philoss[number_philo]->r_fork]);
+		pthread_mutex_unlock(&vars->forks[vars->philoss[number_philo]->l_fork]);
 		return (-1);
 	}
 	ft_print_status(vars, number_philo + 1, STATUS_TAKE_F);
@@ -15,15 +27,15 @@ static int	ft_philo_loop_body(t_vars *vars, int number_philo, long int *time)
 	usleep(vars->time_to_eat * 1000);
 	time[0] = vars->time.tv_sec;
 	time[1] = vars->time.tv_usec;
-	pthread_mutex_unlock(&vars->forks[vars->philos[number_philo]->fork_1]);
-	pthread_mutex_unlock(&vars->forks[vars->philos[number_philo]->fork_2]);
+	pthread_mutex_unlock(&vars->forks[vars->philoss[number_philo]->l_fork]);
+	pthread_mutex_unlock(&vars->forks[vars->philoss[number_philo]->r_fork]);
 	ft_print_status(vars, number_philo + 1, STATUS_SLEEP);
 	usleep(vars->time_to_sleep * 1000);
 	ft_print_status(vars, number_philo + 1, STATUS_THINK);
 	return (0);
 }
 
-static int	ft_philo_cycle(t_vars *vars, int number_philo, long int *time)
+static int	ft_philo_cycle(t_m *vars, int number_philo, long int *time)
 {
 	int		number_eat;
 	int		k;
@@ -53,4 +65,5 @@ void	*ft_philo(void *args)
 	vars = (t_m *)args;
 	number_philo = ft_philo_number(vars);
 	ft_philo_cycle(vars, number_philo, time);
+	return (NULL);
 }

@@ -14,6 +14,14 @@ else
 endif
 
 SRCS 		= src/philo.c \
+				src/ft_check_argc.c \
+				src/ft_mutex.c \
+				src/ft_utils1.c \
+				src/ft_philo.c \
+				src/ft_philo_number.c \
+				src/ft_create_pthreads.c \
+				src/ft_print_status.c \
+				src/ft_wait_pthread.c \
 
 SRCS_BONUS	=
 INCLUDE		= includes/philo.h \

@@ -9,9 +9,10 @@ int	main(int argc, char **argv)
 		return (ft_error("Invalid arguments\n", -1));
 	if (ft_create_mutex(&vars))
 		return (-1);
+	vars.number_get = 0;
 	if (ft_create_pthreads(&vars))
 		return (-1);
-	if (ft_wait_pthreads(&vars))
+	if (ft_wait_pthread(&vars))
 		return (-1);
 	ft_free(&vars);
 	return (0);

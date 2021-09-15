@@ -8,6 +8,12 @@
 # include <stdlib.h>
 # include <pthread.h>
 
+# define STATUS_TAKE_F 0
+# define STATUS_EAT 1
+# define STATUS_SLEEP 2
+# define STATUS_THINK 3
+# define STATUS_DIE 4
+
 typedef struct s_philo
 {
 	int			l_fork;
@@ -41,7 +47,11 @@ size_t	ft_strlen(const char *s);
 int		ft_check_argc(int argc, char **argv, t_m *vars);
 int		ft_create_mutex(t_m *vars);
 void	ft_free(t_m *vars);
+int		ft_create_pthreads(t_m *vars);
 void	*ft_philo(void *args);
 int		ft_philo_number(t_m *vars);
+int		ft_if_die(t_m *vars, int number_philo, long int *time);
+void	ft_print_status(t_m *vars, int number, int status);
+int		ft_wait_pthread(t_m *vars);
 
 #endif
