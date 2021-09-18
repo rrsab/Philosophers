@@ -1,69 +1,80 @@
 #include "../includes/philo.h"
 
-int	ft_if_die(t_m *vars, int number_philo, long int *time)
+static int	check_philo(t_philo *philo, int *filled)
 {
-	if (time[0] != 0 && time[1] != 0
-	&& (((vars->time.tv_sec - time[0]) * 1000000 + vars->time.tv_usec)
-	- time[1]) > vars->time_to_die * 1000)
+	long	last_eat;
+	long	time;
+
+	time = get_time(philo->all->begin_time);
+	last_eat = philo->last_eat;
+	if (time - last_eat >= philo->all->time_to_die)
 	{
-		ft_print_status(vars, number_philo + 1, STATUS_DIE);
+		pthread_mutex_lock(philo->print);
+		time = get_time(philo->all->begin_time);
+		printf("%s%lu %d %s\n", "\x1b[31m", time, philo->id + 1, "died");
 		return (1);
 	}
+	if (philo->flag_eat_count)
+		(*filled)++;
 	return (0);
 }
 
-static int	ft_philo_loop_body(t_m *vars, int number_philo, long int *time)
+void	*monitor(void *my_struct)
 {
-	pthread_mutex_lock(&vars->forks[vars->philoss[number_philo]->r_fork]);
-	pthread_mutex_lock(&vars->forks[vars->philoss[number_philo]->l_fork]);
-	if (vars->end || ft_if_die(vars, number_philo, time))
+	int			i;
+	t_philo		*philo;
+	int			filled;
+	int			flag_eat_times;
+
+	philo = (t_philo *) my_struct;
+	flag_eat_times = philo[0].all->flag_eat_times;
+	ft_usleep(philo[0].all->time_to_die / 2);
+	while (1)
 	{
-		pthread_mutex_unlock(&vars->forks[vars->philoss[number_philo]->r_fork]);
-		pthread_mutex_unlock(&vars->forks[vars->philoss[number_philo]->l_fork]);
-		return (-1);
+		filled = 0;
+		i = 0;
+		while (i < philo[0].all->num_of_philos)
+		{
+			usleep(philo[0].all->time_to_die / 4);
+			if (check_philo(&philo[i++], &filled))
+				return (NULL);
+			if (filled == philo[0].all->num_of_philos && flag_eat_times)
+				return (NULL);
+		}
 	}
-	ft_print_status(vars, number_philo + 1, STATUS_TAKE_F);
-	ft_print_status(vars, number_philo + 1, STATUS_EAT);
-	usleep(vars->time_to_eat * 1000);
-	time[0] = vars->time.tv_sec;
-	time[1] = vars->time.tv_usec;
-	pthread_mutex_unlock(&vars->forks[vars->philoss[number_philo]->l_fork]);
-	pthread_mutex_unlock(&vars->forks[vars->philoss[number_philo]->r_fork]);
-	ft_print_status(vars, number_philo + 1, STATUS_SLEEP);
-	usleep(vars->time_to_sleep * 1000);
-	ft_print_status(vars, number_philo + 1, STATUS_THINK);
-	return (0);
 }
 
-static int	ft_philo_cycle(t_m *vars, int number_philo, long int *time)
+static void	ft_eating(t_philo *philo)
 {
-	int		number_eat;
-	int		k;
+	philo->last_eat = get_time(philo->all->begin_time);
+	print_status(philo, "is eating", "\x1b[33m");
+	philo->eat_count++;
+	if (philo->eat_count >= philo->all->eat_times)
+		philo->flag_eat_count = 1;
+	ft_usleep(philo->all->time_to_eat);
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
+}
 
-	k = 0;
-	number_eat = vars->number_eat;
-	if (number_eat)
-		k = 1;
-	else
-		number_eat = 1;
-	while (number_eat)
+void	*ft_philo(void *my_struct)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *) my_struct;
+	philo->last_eat = get_time(philo->all->begin_time);
+	pthread_detach(philo->all->thread[philo->id]);
+	if (philo->id % 2 == 1)
+		ft_usleep(philo->all->time_to_eat / 2);
+	while (1)
 	{
-		if (ft_philo_loop_body(vars, number_philo, time))
-			return (-1);
-		number_eat = number_eat - k;
+		pthread_mutex_lock(philo->right_fork);
+		print_status(philo, "has taken right fork", "\x1b[34m");
+		pthread_mutex_lock(philo->left_fork);
+		print_status(philo, "has taken left fork", "\x1b[34m");
+		ft_eating(philo);
+		print_status(philo, "is sleeping", "\x1b[35m");
+		ft_usleep(philo->all->time_to_sleep);
+		print_status(philo, "is thinking", "\x1b[0m");
 	}
-	return (0);
-}
-
-void	*ft_philo(void *args)
-{
-	t_m			*vars;
-	int 		number_philo;
-	long int	time[2];
-
-	memset(time, '\0', sizeof(time));
-	vars = (t_m *)args;
-	number_philo = ft_philo_number(vars);
-	ft_philo_cycle(vars, number_philo, time);
 	return (NULL);
 }

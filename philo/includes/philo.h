@@ -1,57 +1,47 @@
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <unistd.h>
-# include <string.h>
-# include <sys/time.h>
 # include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 
-# define STATUS_TAKE_F 0
-# define STATUS_EAT 1
-# define STATUS_SLEEP 2
-# define STATUS_THINK 3
-# define STATUS_DIE 4
+typedef struct s_m
+{
+	int				num_of_philos;
+	long			time_to_die;
+	int				time_to_sleep;
+	int				time_to_eat;
+	int				eat_times;
+	int				flag_eat_times;
+	pthread_t		*thread;
+	pthread_mutex_t	*mutex;
+	long			begin_time;
+	pthread_mutex_t	print;
+}				t_m;
 
 typedef struct s_philo
 {
-	int			l_fork;
-	int			r_fork;
-	pthread_t	pthread;
+	t_m				*all;
+	int				id;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	long			last_eat;
+	int				eat_count;
+	int				flag_eat_count;
+	pthread_mutex_t	*print;
 }				t_philo;
 
-typedef struct	s_m
-{
-	t_philo		**philoss;
-	int				number_get;
-	struct timeval	time;
-	int				number_p;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	long int		valid_time;
-	long int		start_time;
-	int				number_eat;
-	int				*retval;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	*number_get_mutex;
-	pthread_mutex_t	*global_mutex;
-	pthread_mutex_t	*print_mutex;
-	int				end;
-}				t_m;
-
+int		ft_check_argc(int argc, char *argv[], t_m *all);
+int		init_mutex(t_m *all);
+t_philo	*init_philo(t_m *all);
+int		launch_philos(t_philo *philo, t_m *all);
+void	*ft_philo(void *my_struct);
+void	*monitor(void *my_struct);
+void	print_status(t_philo *philo, char *str, char *clr);
+long	get_time(long begin);
+void	ft_usleep(int interval);
 int		ft_atoi(const char *str);
-int 	ft_error(char *str, int ret);
-size_t	ft_strlen(const char *s);
-int		ft_check_argc(int argc, char **argv, t_m *vars);
-int		ft_create_mutex(t_m *vars);
-void	ft_free(t_m *vars);
-int		ft_create_pthreads(t_m *vars);
-void	*ft_philo(void *args);
-int		ft_philo_number(t_m *vars);
-int		ft_if_die(t_m *vars, int number_philo, long int *time);
-void	ft_print_status(t_m *vars, int number, int status);
-int		ft_wait_pthread(t_m *vars);
 
 #endif

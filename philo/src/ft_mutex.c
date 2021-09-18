@@ -1,78 +1,25 @@
 #include "../includes/philo.h"
 
-static int	ft_create_mutex_global(t_m *vars)
-{
-	vars->global_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (vars->global_mutex != NULL)
-	{
-		if ((pthread_mutex_init(vars->global_mutex, NULL)) != 0)
-		{
-			free(vars->global_mutex);
-			return (-1);
-		}
-	}
-	else
-		return (-1);
-	vars->print_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (vars->print_mutex != NULL)
-	{
-		if ((pthread_mutex_init(vars->print_mutex, NULL)) != 0)
-		{
-			free(vars->print_mutex);
-			return (-1);
-		}
-	}
-	else
-		return (-1);
-	return (0);
-}
-
-static int	ft_create_mutex_number(t_m *vars)
-{
-	vars->number_get_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (vars->number_get_mutex != NULL)
-	{
-		if ((pthread_mutex_init(vars->number_get_mutex, NULL)) != 0)
-		{
-			free(vars->number_get_mutex);
-			return (-1);
-		}
-	}
-	else
-		return (-1);
-	return (0);
-}
-
-static int	ft_create_mutex_fork(t_m *vars)
+int	init_mutex(t_m *all)
 {
 	int	i;
 
-	vars->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
-			* vars->number_p);
-	i = -1;
-	if (vars->forks != NULL)
+	all->thread = malloc((all->num_of_philos + 1) * sizeof(pthread_t));
+	all->mutex = malloc((all->num_of_philos + 1) * sizeof(pthread_mutex_t));
+	if (!all->mutex || !all->thread)
 	{
-		while (++i < vars->number_p)
-		{
-			if (pthread_mutex_init(&vars->forks[i], NULL) != 0)
-			{
-				free(vars->forks);
-				return (-1);
-			}
-		}
+		printf("Memory is not located\n");
+		return (0);
 	}
-	else
-		return (-1);
-	return (0);
-}
-
-int	ft_create_mutex(t_m *vars)
-{
-	if (ft_create_mutex_fork(vars))
-		return (-1);
-	if (ft_create_mutex_number(vars))
-		return (-1);
-	if (ft_create_mutex_global(vars))
-		return (-1);
-	return (0);
+	i = 0;
+	while (i <= all->num_of_philos)
+	{
+		if (pthread_mutex_init(&all->mutex[i], NULL))
+		{
+			printf("Mutex is not init\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
 }

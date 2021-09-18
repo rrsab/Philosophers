@@ -2,18 +2,28 @@
 
 int	main(int argc, char **argv)
 {
-	t_m	vars;
+	t_m	all;
+	t_philo			*philo;
 
-	memset(&vars, '\0', sizeof(vars));
-	if (ft_check_argc(argc, argv, &vars))
-		return (ft_error("Invalid arguments\n", -1));
-	if (ft_create_mutex(&vars))
-		return (-1);
-	vars.number_get = 0;
-	if (ft_create_pthreads(&vars))
-		return (-1);
-	if (ft_wait_pthread(&vars))
-		return (-1);
-	ft_free(&vars);
-	return (0);
+	if (argc == 6 || argc == 5)
+	{
+		if (!ft_check_argc(argc, argv, &all))
+			return (0);
+		if (!init_mutex(&all))
+			return (0);
+		philo = init_philo(&all);
+		if (!philo)
+			return (0);
+		if (!launch_philos(philo, &all))
+			return (0);
+		free(all.thread);
+		free(philo);
+		free(all.mutex);
+		return (0);
+	}
+	else
+	{
+		printf("Not valid arguments\n");
+		return (0);
+	}
 }
