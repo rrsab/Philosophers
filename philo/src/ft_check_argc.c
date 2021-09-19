@@ -1,6 +1,6 @@
 #include "../includes/philo.h"
 
-int	ft_check_argc(int argc, char *argv[], t_m *all)
+int	ft_check_argc(int argc, char **argv, t_m *all)
 {
 	all->flag_eat_times = 0;
 	all->num_of_philos = ft_atoi(argv[1]);

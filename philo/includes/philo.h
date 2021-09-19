@@ -33,7 +33,7 @@ typedef struct s_philo
 	pthread_mutex_t	*print;
 }				t_philo;
 
-int		ft_check_argc(int argc, char *argv[], t_m *all);
+int		ft_check_argc(int argc, char **argv, t_m *all);
 int		init_mutex(t_m *all);
 t_philo	*init_philo(t_m *all);
 int		launch_philos(t_philo *philo, t_m *all);
