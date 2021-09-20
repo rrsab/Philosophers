@@ -24,7 +24,7 @@ int	mem_free(t_data *data)
 	return (0);
 }
 
-int	init_forks(t_table *table)
+int	init_forks(t_m *table)
 {
 	sem_unlink("forks");
 	sem_unlink("message");

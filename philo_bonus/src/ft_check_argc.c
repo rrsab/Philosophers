@@ -24,7 +24,7 @@ static int	ft_atoi_int(const char *str)
 	return (convert);
 }
 
-int	ft_check_argc(t_table *table, char **argv)
+int	ft_check_argc(t_m *table, char **argv)
 {
 	table->nbr_ph = ft_atoi_int(argv[1]);
 	table->t_die = ft_atoi_int(argv[2]);

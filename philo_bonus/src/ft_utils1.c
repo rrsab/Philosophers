@@ -8,7 +8,7 @@ uint64_t	timestamp(void)
 	return (t.tv_sec * 1000 + t.tv_usec / 1000);
 }
 
-void	ft_sleep(uint64_t time)
+void	ft_usleep(uint64_t time)
 {
 	uint64_t	start;
 

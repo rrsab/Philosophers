@@ -19,7 +19,7 @@
 # define SLEEP	"is slepping"
 # define THINK	"is thinking"
 
-typedef struct s_ph
+typedef struct s_philo
 {
 	pid_t		pid;
 	int			ph_id;
@@ -27,9 +27,9 @@ typedef struct s_ph
 	uint64_t	t_last_meal;
 	pthread_t	thread_id;
 
-}			t_ph;
+}			t_philo;
 
-typedef struct s_table
+typedef struct s_m
 {
 	sem_t		*message;
 	sem_t		*forks;
@@ -40,29 +40,25 @@ typedef struct s_table
 	uint64_t	t_sleep;
 	int			must_to_eat;
 	int			all_ate;
-}			t_table;
+}			t_m;
 
 typedef struct s_data
 {
-	t_ph		*ph;
-	t_table		*table;
+	t_philo		*ph;
+	t_m		*table;
 	int			ind_cur;
 }			t_data;
 
-// parcing
-int			ft_check_argc(t_table *table, char **argv);
-// init
+int			ft_check_argc(t_m *table, char **argv);
 int			mem_allocation(t_data *data);
 int			mem_free(t_data *data);
 void		init_philos(t_data *data);
 int			init(t_data *data);
-int			init_forks(t_table *table);
-// printing
+int			init_forks(t_m *table);
 int			write_error(char *str);
-void		ft_message(t_data *data, int ph_id, char *str);
-// time
+void		print_status(t_data *data, int ph_id, char *str, char *clr);
 uint64_t	timestamp(void);
-void		ft_sleep(uint64_t time);
+void		ft_usleep(uint64_t time);
 uint64_t	time_current(uint64_t start);
 
 #endif

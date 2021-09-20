@@ -14,32 +14,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-static void	ft_putchar(char c)
-{
-	write (1, &c, 1);
-}
-
-static void	ft_putnbr_ll(long long n)
-{
-	if (n == -9223372036854775807)
-	{
-		write(1, "−9223372036854775807", 23);
-	}
-	else if (n < 0)
-	{		
-		write(1, "-", 1);
-		ft_putnbr_ll(-n);
-	}
-	else if (n > 9)
-	{
-		ft_putnbr_ll(n / 10);
-		ft_putnbr_ll(n % 10);
-	}
-	else
-		ft_putchar(n + '0');
-}
-
-void	ft_message(t_data *data, int ph_id, char *str)
+void	print_status(t_data *data, int ph_id, char *str, char *clr)
 {
 	int			len;
 	uint64_t	tt;
@@ -52,12 +27,7 @@ void	ft_message(t_data *data, int ph_id, char *str)
 	if (tt >= 0)
 	{
 		sem_wait(data->table->message);
-		ft_putnbr_ll(tt);
-		ft_putchar(' ');
-		ft_putnbr_ll(ph_id + 1);
-		ft_putchar(' ');
-		write(1, str, len);
-		ft_putchar('\n');
+		printf("%s%llu %d %s\n", clr, tt, ph_id + 1, str);
 	}
 	if (ft_strcmp(str, DIED))
 		sem_post(data->table->message);

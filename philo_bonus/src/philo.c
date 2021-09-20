@@ -1,25 +1,25 @@
 
 #include "../includes/philo_bonus.h"
 
-void	eating(t_data *data, t_ph *ph)
+void	eating(t_data *data, t_philo *ph)
 {
 	sem_wait(data->table->forks);
-	ft_message(data, ph->ph_id, LFORK);
+	print_status(data, ph->ph_id, LFORK, "\x1b[34m");
 	sem_wait(data->table->forks);
-	ft_message(data, ph->ph_id, RFORK);
+	print_status(data, ph->ph_id, RFORK, "\x1b[34m");
 	if (timestamp() - ph->t_last_meal > data->table->t_die)
 	{
 		sem_wait(data->table->forks);
 	}
 	ph->t_last_meal = timestamp();
-	ft_message(data, ph->ph_id, EAT);
-	ft_sleep(data->table->t_eat);
+	print_status(data, ph->ph_id, EAT, "\x1b[33m");
+	ft_usleep(data->table->t_eat);
 	sem_post(data->table->forks);
 	sem_post(data->table->forks);
 	ph->ate++;
-	ft_message(data, ph->ph_id, SLEEP);
-	ft_sleep(data->table->t_sleep);
-	ft_message(data, ph->ph_id, THINK);
+	print_status(data, ph->ph_id, SLEEP, "\x1b[35m");
+	ft_usleep(data->table->t_sleep);
+	print_status(data, ph->ph_id, THINK, "\x1b[0m");
 }
 
 void	*ph_life(void *v_data)
@@ -44,7 +44,7 @@ void	child_life(t_data *d)
 		usleep(500);
 		if (timestamp() - d->ph->t_last_meal > d->table->t_die)
 		{
-			ft_message(d, d->ph->ph_id, DIED);
+			print_status(d, d->ph->ph_id, DIED, "\x1b[31m");
 			exit (1);
 		}
 		if (d->ph->ate > d->table->must_to_eat \
@@ -79,7 +79,7 @@ int	creating_philos(t_data *data)
 
 int	main(int argc, char **argv)
 {
-	t_table	table;
+	t_m	table;
 	t_data	data;
 	int		i;
 	int		status;
