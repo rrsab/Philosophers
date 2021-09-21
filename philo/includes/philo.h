@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: salyce <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/21 22:25:14 by salyce            #+#    #+#             */
+/*   Updated: 2021/09/21 22:25:15 by salyce           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -6,6 +18,13 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+
+# define DIED	"died"
+# define LFORK	"has taken a left fork"
+# define RFORK	"has taken a right fork"
+# define EAT	"is eating"
+# define SLEEP	"is slepping"
+# define THINK	"is thinking"
 
 typedef struct s_m
 {

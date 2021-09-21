@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: salyce <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/21 22:25:56 by salyce            #+#    #+#             */
+/*   Updated: 2021/09/21 22:25:57 by salyce           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
@@ -44,9 +56,9 @@ typedef struct s_m
 
 typedef struct s_data
 {
-	t_philo		*ph;
+	t_philo	*ph;
 	t_m		*table;
-	int			ind_cur;
+	int		ind_cur;
 }			t_data;
 
 int			ft_check_argc(t_m *table, char **argv);

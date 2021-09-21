@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: salyce <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/21 22:26:14 by salyce            #+#    #+#             */
+/*   Updated: 2021/09/21 22:26:15 by salyce           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/philo_bonus.h"
 
@@ -79,7 +90,7 @@ int	creating_philos(t_data *data)
 
 int	main(int argc, char **argv)
 {
-	t_m	table;
+	t_m		table;
 	t_data	data;
 	int		i;
 	int		status;

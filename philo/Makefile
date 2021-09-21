@@ -1,17 +1,9 @@
-ifeq ($(MAKECMDGOALS),bonus)
-	NAME = philo_bonus
-else
-	NAME = philo
-endif
+NAME		= philo
 FLAGS		= -Wall -Wextra -Werror
 CFLAGS		= $(FLAGS) -I. -g -pthread
 CC			= gcc
 
-ifeq ($(MAKECMDGOALS),bonus)
-	OBJS = $(SRCS_BONUS:%.c=%.o)
-else
-	OBJS = $(SRCS:%.c=%.o)
-endif
+OBJS = $(SRCS:%.c=%.o)
 
 SRCS 		= src/philo.c \
 				src/ft_check_argc.c \

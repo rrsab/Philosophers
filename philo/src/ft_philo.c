@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_philo.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: salyce <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/21 22:25:45 by salyce            #+#    #+#             */
+/*   Updated: 2021/09/21 22:25:46 by salyce           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
 static int	check_philo(t_philo *philo, int *filled)
@@ -11,7 +23,7 @@ static int	check_philo(t_philo *philo, int *filled)
 	{
 		pthread_mutex_lock(philo->print);
 		time = get_time(philo->all->begin_time);
-		printf("%s%lu %d %s\n", "\x1b[31m", time, philo->id + 1, "died");
+		printf("%s%lu %d %s\n", "\x1b[31m", time, philo->id + 1, DIED);
 		return (1);
 	}
 	if (philo->flag_eat_count)
@@ -47,7 +59,7 @@ void	*monitor(void *my_struct)
 static void	ft_eating(t_philo *philo)
 {
 	philo->last_eat = get_time(philo->all->begin_time);
-	print_status(philo, "is eating", "\x1b[33m");
+	print_status(philo, EAT, "\x1b[33m");
 	philo->eat_count++;
 	if (philo->eat_count >= philo->all->eat_times)
 		philo->flag_eat_count = 1;
@@ -68,13 +80,13 @@ void	*ft_philo(void *my_struct)
 	while (1)
 	{
 		pthread_mutex_lock(philo->right_fork);
-		print_status(philo, "has taken right fork", "\x1b[34m");
+		print_status(philo, RFORK, "\x1b[34m");
 		pthread_mutex_lock(philo->left_fork);
-		print_status(philo, "has taken left fork", "\x1b[34m");
+		print_status(philo, LFORK, "\x1b[34m");
 		ft_eating(philo);
-		print_status(philo, "is sleeping", "\x1b[35m");
+		print_status(philo, SLEEP, "\x1b[35m");
 		ft_usleep(philo->all->time_to_sleep);
-		print_status(philo, "is thinking", "\x1b[0m");
+		print_status(philo, THINK, "\x1b[0m");
 	}
 	return (NULL);
 }
