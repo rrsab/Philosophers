@@ -17,7 +17,7 @@ int	main(int argc, char **argv)
 	t_m		all;
 	t_philo	*philo;
 
-	if (argc == 6 || argc == 5)
+	if (argc == 5 || argc == 6)
 	{
 		if (!ft_check_argc(argc, argv, &all))
 			return (0);
